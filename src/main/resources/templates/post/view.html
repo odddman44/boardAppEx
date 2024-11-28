@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="layout/basic">
+<th:block layout:fragment="title">
+    <title>상세 페이지</title>
+</th:block>
+
+<th:block layout:fragment="content">
+    <div class="page_tits">
+        <h3>게시판 관리</h3>
+        <p class="path"><strong>현재 위치 :</strong> <span>게시판 관리</span> <span>리스트형</span> <span>상세정보</span></p>
+    </div>
+
+    <div class="content">
+        <section>
+            <table class="tb tb_row">
+                <colgroup>
+                    <col style="width:10%;"/>
+                    <col style="width:23%;"/>
+                    <col style="width:10%;"/>
+                    <col style="width:23%;"/>
+                </colgroup>
+                <tbody>
+                <tr>
+                    <th scope="row">글 유형</th>
+                    <td id="noticeYn"></td>
+
+                    <th scope="row">등록일</th>
+                    <td id="createdDate"></td>
+                </tr>
+                <tr>
+                    <th scope="row">제목</th>
+                    <td id="title"></td>
+
+                    <th scope="row">조회</th>
+                    <td id="hits"></td>
+                </tr>
+                <tr>
+                    <th scope="row">이름</th>
+                    <td id="writer" colspan="3"></td>
+                </tr>
+                <tr>
+                    <th scope="row">내용</th>
+                    <td id="content" colspan="3"></td>
+                </tr>
+                </tbody>
+            </table>
+            <p class="btn_set">
+                <a href="javascript: void(0);" onclick="goList();" class="btns btn_bdr3 btn_mid">뒤로</a>
+                <a href="javascript: void(0);" onclick="goWrite();" class="btns btn_bdr4 btn_mid">수정</a>
+                <button type="button" onclick="deleteBoard();" class="btns btn_bdr1 btn_mid">삭제</button>
+            </p>
+        </section>
+    </div> <!--/* .content */-->
+</th:block>
+
+<th:block layout:fragment="script">
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+
+        // 페이지 로딩 시 게시글 상세 조회
+        window.onload = () => {
+            findPost();
+        }
+
+        // 게시글 조회
+        function findPost() {
+            const id = /*[[ ${id} ]]*/;
+
+            if (!id) {
+                return false;
+            }
+
+            fetch(`/api/posts/${id}`).then(response => {
+                    if (!response.ok) {
+                        throw new Error('Request failed...');
+                    }
+                    return response.json();
+                }).then(json => {
+                    json.createdDate = moment(json.createdDate).format('YYYY-MM-DD HH:mm:ss');
+                    json.noticeYn = json.noticeYn === 'Y' ? '공지' : '일반';
+
+                    // 데이터 삽입
+                    Object.keys(json).forEach(key => {
+                        const elem = document.getElementById(key);
+                        if (elem) {
+                            elem.innerText = json[key];
+                        }
+                    });
+                })
+                .catch(error => {
+                    alert('게시글 정보를 찾을 수 없습니다.');
+                    goList();
+                });
+        }
+
+        // 뒤로가기
+        function goList() {
+            location.href = '/post/list';
+        }
+
+        // 수정하기
+        function goWrite() {
+            location.href = `/post/write?id=[[ ${id} ]]`;
+        }
+
+        // 삭제하기
+        function deleteBoard() {
+            const id = /*[[ ${id} ]]*/;
+
+            if (!confirm(`${id}번 게시글을 삭제할까요?`)) {
+                return false;
+            }
+
+            fetch(`/api/posts/${id}`, {
+                method: 'DELETE',
+                headers: { 'Content-Type': 'application/json' },
+            }).then(response => {
+                    if (!response.ok) {
+                        throw new Error('Request failed...');
+                    }
+                    alert('삭제되었습니다.');
+                    goList();
+
+            }).catch(error => {
+                alert('오류가 발생했습니다.');
+            });
+        }
+
+        /*]]>*/
+    </script>
+</th:block>
+
+</html>

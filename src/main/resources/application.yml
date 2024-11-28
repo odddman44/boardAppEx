@@ -1,0 +1,50 @@
+# Boot Application 서버 포트
+server:
+  port: 18080
+
+# log
+logging:
+  level:
+    root: INFO
+    com.study: DEBUG  # 'com.study' 경로 아래는 DEBUG 로그로
+
+# 데이터소스
+spring:
+  datasource:
+    hikari:
+      driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
+      jdbc-url: jdbc:log4jdbc:mariadb://localhost:3306/board?serverTimezone=Asia/Seoul&useUnicode=true&characterEncoding=utf8&useSSL=false&allowMultiQueries=true
+      username: test
+      password: sso132
+
+  # 정적 파일 변경 실시간 반영
+  devtools:
+    restart:
+      enabled: 'true'  # 자동 재시작 활성화/비활성화
+    livereload:
+      enabled: 'true'
+
+  # 타임리프 캐싱 OFF
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
+    cache: false
+  mvc:
+    view:
+      prefix: /templates/
+      suffix: .html
+
+  # JPA 설정
+  jpa:
+    database: mysql
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    generate-ddl: 'false'
+    show-sql: 'true'
+    open-in-view: 'false'
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        format_sql: 'true'
+        use_sql_comments: 'true'
+        default_batch_fetch_size: '100'

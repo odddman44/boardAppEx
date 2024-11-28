@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="layout/basic">
+<th:block layout:fragment="title">
+    <title>글작성 페이지</title>
+</th:block>
+
+<th:block layout:fragment="content">
+    <div class="page_tits">
+        <h3>게시판 관리</h3>
+        <p class="path"><strong>현재 위치 :</strong> <span>게시판 관리</span> <span>리스트형</span> <span>글작성</span></p>
+    </div>
+
+    <div class="content">
+        <section>
+            <form id="saveForm" autocomplete="off">
+                <!--                <input type="hidden" id="id" name="id" th:value="${id}" />-->
+
+                <!--/* 서버로 전달할 공지글 여부 */-->
+                <input type="hidden" id="noticeYn" name="noticeYn"/>
+                <table class="tb tb_row">
+                    <colgroup>
+                        <col style="width:15%;"/>
+                        <col style="width:35%;"/>
+                        <col style="width:15%;"/>
+                        <col style="width:35%;"/>
+                    </colgroup>
+                    <tbody>
+                    <tr>
+                        <th scope="row">공지글</th>
+                        <td><span class="chkbox"><input type="checkbox" id="isNotice" name="isNotice"
+                                                        class="chk"/><i></i><label for="isNotice"> 설정</label></span>
+                        </td>
+
+                        <th scope="row">등록일</th>
+                        <td colspan="3"><input type="text" id="createdDate" name="createdDate" readonly/></td>
+                    </tr>
+
+                    <tr>
+                        <th>제목 <span class="es">필수 입력</span></th>
+                        <td colspan="3"><input type="text" id="title" name="title" maxlength="50"
+                                               placeholder="제목을 입력해 주세요."/></td>
+                    </tr>
+
+                    <tr>
+                        <th>이름 <span class="es">필수 입력</span></th>
+                        <td colspan="3"><input type="text" id="writer" name="writer" maxlength="10"
+                                               placeholder="이름을 입력해 주세요."/></td>
+                    </tr>
+
+                    <tr>
+                        <th>내용 <span class="es">필수 입력</span></th>
+                        <td colspan="3"><textarea id="content" name="content" cols="50" rows="10"
+                                                  placeholder="내용을 입력해 주세요."></textarea></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </form>
+            <p class="btn_set">
+                <a th:href="@{/post/list}" class="btns btn_bdr3 btn_mid">뒤로</a>
+                <button type="button" id="saveBtn" onclick="savePost();" class="btns btn_st3 btn_mid">저장</button>
+            </p>
+        </section>
+    </div> <!--/* .content */-->
+</th:block>
+
+<th:block layout:fragment="script">
+    <script th:inline="javascript">
+
+        window.onload = () => {
+            findPost();
+            // initCreatedDate();
+        }
+
+
+        // 등록일 초기화
+        // function initCreatedDate() {
+        //     document.getElementById('createdDate').value = dayjs().format('YYYY-MM-DD');
+        // }
+
+
+        // 게시글 저장(수정)
+        function savePost() {
+            const form = document.getElementById('saveForm');
+            const fields = [form.title, form.writer, form.content];
+            const fieldNames = ['제목', '이름', '내용'];
+
+            // 유효성검사
+            for (let i = 0, len = fields.length; i < len; i++) {
+                isValid(fields[i], fieldNames[i]);
+            }
+
+            // 데이터 수집
+            const params = {
+                title: form.title.value,
+                writer: form.writer.value,
+                content: form.content.value,
+                noticeYn: form.isNotice.checked ? 'Y' : 'N',
+                deleteYn: 'N'
+            };
+
+            // 저장 및 수정 API 호출 (POST or PATCH)
+            const id = /*[[ ${id} ]]*/;
+            const uri = id ? `/api/posts/${id}` : '/api/posts';
+            const method = id ? 'PATCH' : 'POST';
+
+            fetch(uri, {
+                method: method,
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(params)
+
+            }).then(response => {
+                if (!response.ok) {
+                    throw new Error('Request failed...');
+                }
+
+                alert('저장되었습니다.');
+                location.href = '/post/list';
+
+            }).catch(error => {
+                alert('오류가 발생하였습니다.');
+            });
+        }
+
+
+        function findPost() {
+            const id = /*[[ ${id} ]]*/;
+
+            if (!id) {
+                return false;
+            }
+
+            fetch(`/api/posts/${id}`).then(response => {
+                if (!response.ok) {
+                    throw new Error('Request failed...');
+                }
+                return response.json();
+            }).then(json => {
+                // const form = document.getElementById('saveForm');
+                json.createdDate = moment(json.createdDate).format('YYYY-MM-DD HH:mm:ss');
+                // json.noticeYn = json.noticeYn === 'Y' ? '공지' : '일반';
+
+                // 데이터 삽입
+                Object.keys(json).forEach(key => {
+                    const elem = document.getElementById(key);
+                    if (elem) {
+                        if (elem.type === 'checkbox') {
+                            elem.checked = json[key] === 'Y'; // 'Y'일 경우 체크
+                        } else {
+                            elem.value = json[key];
+                        }
+                    }
+                });
+
+                // form.title.value = json.title;
+                // form.content.value = json.content;
+                // form.writer.value = json.writer;
+            }).catch(error => {
+                alert('게시글 정보를 찾을 수 없습니다.');
+                goList();
+            });
+        }
+
+    </script>
+</th:block>
+</html>
