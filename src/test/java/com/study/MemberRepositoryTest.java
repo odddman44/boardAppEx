@@ -26,7 +26,7 @@ public class MemberRepositoryTest {
                 .name("홍길동")
                 .gender(Gender.M)
                 .birthday(LocalDate.of(1994, 04, 04))
-                .deleteYn(false)
+                .deleteYn('N')
                 .build();
 
         Member member = memberRepository.save(saveParams);

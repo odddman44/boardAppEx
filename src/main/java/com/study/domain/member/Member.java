@@ -35,7 +35,7 @@ public class Member extends BaseTimeEntity {
     @Column(name = "birthday")
     private LocalDate birthday;     // 생년월일
 
-    @Column(name = "delete_yn")
+    @Column(name = "delete_yn", nullable = false)
     private char deleteYn;       // 삭제 여부
 
     @Builder

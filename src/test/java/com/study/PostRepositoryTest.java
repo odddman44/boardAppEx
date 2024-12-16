@@ -27,8 +27,8 @@ public class PostRepositoryTest {
 				.content("게시글 내용")
 				.writer("작성자1")
 				.hits(0)
-				.noticeYn(false)
-				.deleteYn(false)
+				.noticeYn('N')
+				.deleteYn('N')
 				.build();
 
 		Post post = postRepository.save(saveParams);
