@@ -1,8 +1,8 @@
 package com.study;
 
-import com.study.domain.member.Gender;
-import com.study.domain.member.Member;
-import com.study.domain.member.MemberRepository;
+import com.study.member.Gender;
+import com.study.member.Member;
+import com.study.member.MemberRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

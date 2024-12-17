@@ -1,7 +1,7 @@
-package com.study.domain.post;
+package com.study.post;
 
 
-import com.study.domain.common.BaseTimeEntity;
+import com.study.common.BaseTimeEntity;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;

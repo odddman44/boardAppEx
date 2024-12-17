@@ -1,4 +1,4 @@
-package com.study.domain.post.controller;
+package com.study.post.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

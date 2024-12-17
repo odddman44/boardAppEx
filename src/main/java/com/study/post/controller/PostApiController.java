@@ -1,13 +1,15 @@
-package com.study.domain.post.controller;
+package com.study.post.controller;
 
 
-import com.study.domain.post.dto.PostRequestDto;
-import com.study.domain.post.dto.PostResponseDto;
-import com.study.domain.post.service.PostService;
+import com.study.paging.CommonParams;
+import com.study.post.dto.PostRequestDto;
+import com.study.post.dto.PostResponseDto;
+import com.study.post.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api")
@@ -44,8 +46,8 @@ public class PostApiController {
      * 게시글 리스트 조회
      */
     @GetMapping("/posts")
-    public List<PostResponseDto> findAll(@RequestParam final char deleteYn) {
-        return postService.findAllByDeleteYn(deleteYn);
+    public Map<String, Object> findAll(final CommonParams params) {
+        return postService.findAll(params);
     }
 
     /**

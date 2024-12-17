@@ -1,7 +1,7 @@
 package com.study;
 
-import com.study.domain.post.Post;
-import com.study.domain.post.PostRepository;
+import com.study.post.Post;
+import com.study.post.PostRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

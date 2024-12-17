@@ -57,7 +57,7 @@
                 </table>
             </form>
             <p class="btn_set">
-                <a th:href="@{/post/list}" class="btns btn_bdr3 btn_mid">뒤로</a>
+                <a href="javascript: void(0);" onclick="goList();" class="btns btn_bdr3 btn_mid">뒤로</a>
                 <button type="button" id="saveBtn" onclick="savePost();" class="btns btn_st3 btn_mid">저장</button>
             </p>
         </section>
@@ -77,6 +77,14 @@
         // function initCreatedDate() {
         //     document.getElementById('createdDate').value = dayjs().format('YYYY-MM-DD');
         // }
+
+        /**
+         * 뒤로가기
+         */
+        function goList() {
+            const id = /*[[ ${id} ]]*/;
+            location.href = (id) ? '/post/list' + location.search : '/post/list';
+        }
 
 
         // 게시글 저장(수정)
@@ -117,7 +125,7 @@
                 }
 
                 alert('저장되었습니다.');
-                location.href = '/post/list';
+                goList();
 
             }).catch(error => {
                 alert('오류가 발생하였습니다.');

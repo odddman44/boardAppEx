@@ -1,6 +1,6 @@
-package com.study.domain.member;
+package com.study.member;
 
-import com.study.domain.common.BaseTimeEntity;
+import com.study.common.BaseTimeEntity;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;

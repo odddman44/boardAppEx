@@ -96,12 +96,12 @@
 
         // 뒤로가기
         function goList() {
-            location.href = '/post/list';
+            location.href = '/post/list' + location.search;
         }
 
         // 수정하기
         function goWrite() {
-            location.href = `/post/write?id=[[ ${id} ]]`;
+            location.href = '/post/write' + location.search +`&id=[[ ${id} ]]`;
         }
 
         // 삭제하기
@@ -115,6 +115,7 @@
             fetch(`/api/posts/${id}`, {
                 method: 'DELETE',
                 headers: { 'Content-Type': 'application/json' },
+                
             }).then(response => {
                     if (!response.ok) {
                         throw new Error('Request failed...');

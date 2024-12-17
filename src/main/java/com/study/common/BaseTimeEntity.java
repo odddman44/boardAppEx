@@ -1,4 +1,4 @@
-package com.study.domain.common;
+package com.study.common;
 
 import lombok.Getter;
 

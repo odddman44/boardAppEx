@@ -1,11 +1,14 @@
-package com.study.domain.post.dto;
+package com.study.post.dto;
 
-import com.study.domain.post.Post;
+import com.study.post.Post;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class PostResponseDto {
 
     private Long id; // PK
@@ -14,7 +17,7 @@ public class PostResponseDto {
     private String writer; // 작성자
     private int hits; // 조회 수
     private char deleteYn; // 삭제 여부
-    private char noticeYn; // r공지글 여부
+    private char noticeYn; // 공지글 여부
     private LocalDateTime createdDate; // 생성일
     private LocalDateTime modifiedDate; // 수정일
 

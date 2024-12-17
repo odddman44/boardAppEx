@@ -1,4 +1,4 @@
-package com.study.domain.member;
+package com.study.member;
 
 public enum Gender {
 

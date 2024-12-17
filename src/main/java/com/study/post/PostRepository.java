@@ -1,4 +1,4 @@
-package com.study.domain.post;
+package com.study.post;
 
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;

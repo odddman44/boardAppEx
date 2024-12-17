@@ -1,7 +1,7 @@
-package com.study.domain.post.dto;
+package com.study.post.dto;
 
 
-import com.study.domain.post.Post;
+import com.study.post.Post;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
