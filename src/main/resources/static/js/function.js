@@ -28,3 +28,18 @@ function isValid(target, fieldName, focusTarget) {
     ( !focusTarget ? target : focusTarget).focus();
     throw new Error(`"${target.id}" is required...`)
 }
+
+async function getJson(uri, params) {
+    if (params) {
+        uri = uri + '?' + new URLSearchParams(params).toString();
+    }
+    const response = await fetch(uri);
+
+    if (!response.ok) {
+        await response.json().then(error => {
+            throw error;
+        });
+    }
+
+    return await response.json();
+}

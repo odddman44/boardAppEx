@@ -1,6 +1,6 @@
 package com.study.post.model;
 
-import com.study.paging.CommonParams;
+import com.study.utils.paging.CommonParams;
 import com.study.post.dto.PostResponseDto;
 import org.apache.ibatis.annotations.Mapper;
 

@@ -1,4 +1,4 @@
-package com.study.paging;
+package com.study.utils.paging;
 
 import lombok.Getter;
 import lombok.Setter;

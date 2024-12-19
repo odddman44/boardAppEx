@@ -1,6 +1,8 @@
 package com.study.member;
 
 import com.study.common.BaseTimeEntity;
+import com.study.member.dto.MemberRequestDto;
+import com.study.utils.PasswordEncoder;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -41,10 +43,31 @@ public class Member extends BaseTimeEntity {
     @Builder
     public Member(String loginId, String password, String name, Gender gender, LocalDate birthday, char deleteYn) {
         this.loginId = loginId;
-        this.password = password;
+        this.password = password;   // 해싱된 비밀번호
         this.name = name;
         this.gender = gender;
         this.birthday = birthday;
         this.deleteYn = deleteYn;
+    }
+
+
+    public void update(MemberRequestDto params) {
+        if (params.getName() != null && !params.getName().isBlank()) {
+            this.name = params.getName();
+        }
+        if (params.getGender() != null) {
+            this.gender = params.getGender();
+        }
+        if (params.getBirthday() != null) {
+            this.birthday = params.getBirthday();
+        }
+    }
+
+    public void delete() {
+        this.deleteYn = 'Y';
+    }
+
+    public void updatePassword(String hashedPassword) {
+        this.password = hashedPassword;
     }
 }

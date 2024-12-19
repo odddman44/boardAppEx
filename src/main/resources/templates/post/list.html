@@ -108,22 +108,8 @@
         }
 
         /**
-         * 공통 API 요청 함수 
+         * 공통 API 요청 함수 -> function.js로 옮김
          */
-        async function getJson(uri, params) {
-            if (params) {
-                uri = uri + '?' + new URLSearchParams(params).toString();
-            }
-            const response = await fetch(uri);
-
-            if (!response.ok) {
-                await response.json().then(error => {
-                    throw error;
-                });
-            }
-
-            return await response.json();
-         }
 
 
 		/**

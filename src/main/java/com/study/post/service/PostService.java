@@ -1,8 +1,7 @@
 package com.study.post.service;
 
-import antlr.actions.python.CodeLexer;
-import com.study.paging.CommonParams;
-import com.study.paging.Pagination;
+import com.study.utils.paging.CommonParams;
+import com.study.utils.paging.Pagination;
 import com.study.post.Post;
 import com.study.post.PostRepository;
 import com.study.post.dto.PostRequestDto;

@@ -1,14 +1,13 @@
 package com.study.post.controller;
 
 
-import com.study.paging.CommonParams;
+import com.study.utils.paging.CommonParams;
 import com.study.post.dto.PostRequestDto;
 import com.study.post.dto.PostResponseDto;
 import com.study.post.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Map;
 
 @RestController
