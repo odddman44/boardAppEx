@@ -1,0 +1,8 @@
+spring:
+  profiles: prod
+  datasource:
+    hikari:
+      driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
+      jdbc-url: jdbc:log4jdbc:mariadb://mariadb:3306/board?serverTimezone=Asia/Seoul&useUnicode=true&characterEncoding=utf8&useSSL=false&allowMultiQueries=true
+      username: board
+      password: board132

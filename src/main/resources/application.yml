@@ -10,13 +10,6 @@ logging:
 
 # 데이터소스
 spring:
-  datasource:
-    hikari:
-      driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
-      jdbc-url: jdbc:log4jdbc:mariadb://localhost:3306/board?serverTimezone=Asia/Seoul&useUnicode=true&characterEncoding=utf8&useSSL=false&allowMultiQueries=true
-      username: test
-      password: sso132
-
   # 정적 파일 변경 실시간 반영
   devtools:
     restart:
