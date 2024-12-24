@@ -3,10 +3,8 @@ pipeline {
         label 'Build_Node' // 새로 생성한 노드 사용
     }
     environment {
-        DOCKER_IMAGE_NAME = 'boardAppEx'
-        DOCKER_CONTAINER_NAME = 'boardAppEx'
+        DOCKER_COMPOSE_PATH = '/home/oddd/app/board/docker-compose.yml'
         GIT_REPO = 'https://github.com/odddman44/boardAppEx.git'
-        JAR_FILE = 'build/libs/Board-0.0.1-SNAPSHOT.jar' // Gradle로 빌드된 JAR 파일
     }
     stages {
         stage('Clone Repository') {
@@ -22,22 +20,12 @@ pipeline {
                 '''
             }
         }
-        stage('Build Docker Image') {
+        stage('Build and Run Docker Compose') {
             steps {
                 script {
                     sh '''
-                    docker build -t ${DOCKER_IMAGE_NAME} .
-                    '''
-                }
-            }
-        }
-        stage('Run Docker Container') {
-            steps {
-                script {
-                    sh '''
-                    docker stop ${DOCKER_CONTAINER_NAME} || true
-                    docker rm ${DOCKER_CONTAINER_NAME} || true
-                    docker run -d --name ${DOCKER_CONTAINER_NAME} -p 18080:18080 ${DOCKER_IMAGE_NAME}
+                    docker-compose -f ${DOCKER_COMPOSE_PATH} down || true
+                    docker-compose -f ${DOCKER_COMPOSE_PATH} up -d --build
                     '''
                 }
             }
@@ -48,7 +36,12 @@ pipeline {
             echo 'Pipeline completed successfully.'
         }
         failure {
-            echo 'Pipeline failed.'
+            script {
+                echo 'Pipeline failed. Checking Docker Compose logs...'
+                sh '''
+                docker-compose -f ${DOCKER_COMPOSE_PATH} logs
+                '''
+            }
         }
     }
 }
