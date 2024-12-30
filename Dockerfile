@@ -4,6 +4,8 @@ FROM openjdk:11-jdk-slim
 # Docker CLI 설치
 USER root
 RUN apt-get update && apt-get install -y docker.io && apt-get clean
+# 기본 사용자로 복귀
+USER jenkins
 
 # 2. JAR 파일 복사
 # Gradle 빌드 후 생성된 JAR 파일을 복사합니다.
