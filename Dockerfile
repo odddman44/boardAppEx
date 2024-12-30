@@ -1,6 +1,10 @@
 # 1. OpenJDK를 베이스 이미지로 사용
 FROM openjdk:11-jdk-slim
 
+# Docker CLI 설치
+USER root
+RUN apt-get update && apt-get install -y docker.io && apt-get clean
+
 # 2. JAR 파일 복사
 # Gradle 빌드 후 생성된 JAR 파일을 복사합니다.
 ARG JAR_FILE=build/libs/Board-0.0.1-SNAPSHOT.jar
