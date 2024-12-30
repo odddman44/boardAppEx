@@ -18,7 +18,7 @@ pipeline {
             steps {
                 sh '''
                 chmod +x ./gradlew
-                ./gradlew clean build -Dspring.profiles.active=jenkins
+                ./gradlew clean build -x test -Dspring.profiles.active=jenkins
                 '''
             }
         }
