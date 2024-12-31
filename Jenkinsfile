@@ -4,7 +4,7 @@ pipeline {
         stage('Checkout') {
             steps {
                 // From GitHub SCM
-                git branch: 'main', url: 'https://github.com/odddman44/boardAppEx.git'
+                git branch: 'master', url: 'https://github.com/odddman44/boardAppEx.git'
             }
         }
         stage('Build') {
