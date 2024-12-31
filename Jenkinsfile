@@ -10,7 +10,7 @@ pipeline {
         stage('Build') {
             steps {
                 // Gradle 빌드
-                chmod +x ./gradlew
+                sh 'chmod +x ./gradlew'
                 sh './gradlew clean build -x test -Dspring.profiles.active=prod'
             }
         }
