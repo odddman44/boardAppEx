@@ -25,7 +25,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 sh '''
-                /usr/boin/docker build -t ${DOCKER_IMAGE_NAME} .
+                /usr/bin/docker build -t ${DOCKER_IMAGE_NAME} .
                 '''
             }
         }
