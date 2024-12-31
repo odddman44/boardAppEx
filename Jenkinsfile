@@ -1,48 +1,37 @@
 pipeline {
-    agent {
-        label 'Build_Node'
-    }
-    environment {
-        DOCKER_IMAGE_NAME = 'board_app'
-        DOCKER_CONTAINER_NAME = 'board_app'
-        GIT_REPO = 'https://github.com/odddman44/boardAppEx.git'
-        JAR_FILE = 'build/libs/Board-0.0.1-SNAPSHOT.jar'
-    }
+    agent any
     stages {
-        stage('Clone Repository') {
+        stage('Checkout') {
             steps {
-                git branch: 'master', url: "${GIT_REPO}"
+                // From GitHub SCM
+                git branch: 'main', url: 'https://github.com/odddman44/boardAppEx.git'
             }
         }
-        stage('Build with Gradle') {
+        stage('Build') {
             steps {
-                sh '''
+                // Gradle 빌드
                 chmod +x ./gradlew
-                ./gradlew clean build -x test -Dspring.profiles.active=jenkins
-                '''
+                sh './gradlew clean build -x test -Dspring.profiles.active=prod'
             }
         }
-        stage('Build Docker Image') {
+        stage('Docker Build') {
             steps {
+                // Docker 이미지 빌드
                 sh '''
-                /usr/bin/docker build -t ${DOCKER_IMAGE_NAME} .
+                export DOCKER_BUILDKIT=1
+                docker build -t board-app-image .
                 '''
             }
         }
-        stage('Run with Docker Compose') {
+        stage('Run Container') {
             steps {
+                // Docker 컨테이너 실행
                 sh '''
-                docker-compose -f /home/oddd/app/board/docker-compose.yml up -d
+                docker stop board-app || true
+                docker rm board-app || true
+                docker run -d --name board-app -p 18080:18080 board-app-image
                 '''
             }
-        }
-    }
-    post {
-        success {
-            echo 'Pipeline completed successfully.'
-        }
-        failure {
-            echo 'Pipeline failed.'
         }
     }
 }
