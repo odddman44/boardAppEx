@@ -12,4 +12,4 @@ EXPOSE 18080
 
 # 4. 애플리케이션 실행
 #ENTRYPOINT ["java", "-Dspring.profiles.active=prod", "-jar", "/board.jar"]
-ENTRYPOINT ["java", "-jar", "/board.jar"]
+ENTRYPOINT ["java", "-Dspring.profiles.active=prod", "-jar", "/board.jar"]

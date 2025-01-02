@@ -11,7 +11,7 @@ pipeline {
             steps {
                 // Gradle 빌드
                 sh 'chmod +x ./gradlew'
-                sh './gradlew clean build -x test -Dspring.profiles.active=prod'
+                sh './gradlew clean build -x test'
             }
         }
         stage('Docker Build') {
