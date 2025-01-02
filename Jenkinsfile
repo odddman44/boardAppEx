@@ -29,7 +29,9 @@ pipeline {
                 sh '''
                 docker stop board-app || true
                 docker rm board-app || true
-                docker run -d --name board-app -p 18080:18080 board-app-image
+                docker run -d --name board-app -p 18080:18080 \
+                    --network app_network \
+                    board-app-image
                 '''
             }
         }
