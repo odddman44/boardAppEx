@@ -101,7 +101,10 @@ public class PostService {
 
         // 등록된 게시글이 없는 경우, 로직 종료
         if (count < 1) {
-            return Collections.emptyMap();
+            Map<String, Object> response = new HashMap<>();
+            response.put("params", params);
+            response.put("list", Collections.emptyList()); // 빈 리스트를 명시적으로 설정
+            return response;
         }
 
         // 페이지네이션 정보 계산
