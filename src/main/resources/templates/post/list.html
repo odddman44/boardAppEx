@@ -144,7 +144,7 @@
                 let num = response.params.pagination.totalRecordCount - ((response.params.page - 1) * response.params.recordPerPage);
 
                 response.list.forEach((obj, idx) => {
-                    const viewUri = `/board/view/${obj.id}` + '?' + queryString;
+                    const viewUri = `/post/view/${obj.id}` + '?' + queryString;
                     const noticeText = obj.noticeYn === 'Y' ? '공지' : '일반'; // noticeYn 값 확인
 
                     html += `
