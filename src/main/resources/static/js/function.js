@@ -43,3 +43,32 @@ async function getJson(uri, params) {
 
     return await response.json();
 }
+
+/**
+ * 데이터 저장/수정/삭제
+ * @param uri - API Request URI
+ * @param method - API Request Method ('POST', 'PUT', 'DELETE')
+ * @param params - Parameters (Object)
+ * @returns json - 결과 데이터
+ */
+async function callApi(uri, method, params) {
+    try {
+        const response = await fetch(uri, {
+            method: method,
+            headers: {
+                'Content-Type': 'application/json; charset=utf-8',
+            },
+            body: params ? JSON.stringify(params) : null,
+        });
+
+        if (!response.ok) {
+            const error = await response.json();
+            throw error;
+        }
+
+        return await response.json();
+    } catch (error) {
+        console.error('API 요청 중 오류 발생:', error);
+        throw error;
+    }
+}

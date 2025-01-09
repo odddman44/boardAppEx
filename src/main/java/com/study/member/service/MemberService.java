@@ -6,8 +6,9 @@ import com.study.member.Member;
 import com.study.member.MemberRepository;
 import com.study.member.dto.MemberRequestDto;
 import com.study.member.dto.MemberResponseDto;
-import com.study.utils.PasswordEncoder;
+import com.study.utils.MyPasswordEncoder;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -16,16 +17,33 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class MemberService {
 
     private final MemberRepository memberRepository;
+    private final PasswordEncoder passwordEncoder;
+    //private final MyPasswordEncoder passwordEncoder;
+
 
     /**
      * 회원 정보 저장 (회원가입)
      */
     @Transactional
     public Long saveMember(final MemberRequestDto params) {
-        Member entity = memberRepository.save(params.toEntity());
+        // 비밀번호 해싱 및 Salt 생성
+        //String salt = passwordEncoder.generateSalt();
+        String hashedPassword = encodePassword(params.getPassword());
+        // 엔터티 생성
+        Member entity = Member.builder()
+                .loginId(params.getLoginId())
+                .password(hashedPassword)
+                .name(params.getName())
+                .gender(params.getGender())
+                .birthday(params.getBirthday())
+                .deleteYn('N')
+                .build();
+
+        memberRepository.save(entity);
         return entity.getId();
     }
 
@@ -50,12 +68,13 @@ public class MemberService {
                 .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
 
         // 새 비밀번호 해싱
-        String salt = PasswordEncoder.generateSalt();
-        String hashedPassword = PasswordEncoder.encode(rawPassword, salt);
+        //String salt = passwordEncoder.generateSalt();
+        String hashedPassword = encodePassword(rawPassword);
 
         member.updatePassword(hashedPassword);
         return member.getId();
     }
+
 
     /**
      * 회원 정보 삭제 (회원 탈퇴)
@@ -92,5 +111,30 @@ public class MemberService {
      */
     public int countByLoginId(final String loginId) {
         return memberRepository.countByLoginId(loginId);
+    }
+
+    /**
+     * 로그인 처리 메서드
+     * @param loginId  사용자 ID
+     * @param password 사용자 입력 비밀번호
+     * @return MemberResponseDto (로그인 성공 시 사용자 정보 반환)
+     */
+    public MemberResponseDto login(final String loginId, final String password) {
+        // 1. 사용자 정보 조회
+        Member member = memberRepository.findByLoginIdAndDeleteYn(loginId, 'N')
+                .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
+
+        // 2. 비밀번호 검증
+        if (!passwordEncoder.matches(password, member.getPassword())) {
+            throw new CustomException(ErrorCode.INVALID_PASSWORD);
+        }
+
+        // 3. 로그인 성공 시 사용자 정보 반환
+        return new MemberResponseDto(member);
+    }
+
+
+    private String encodePassword(String rawPassword) {
+        return passwordEncoder.encode(rawPassword);
     }
 }

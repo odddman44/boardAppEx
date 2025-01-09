@@ -13,9 +13,9 @@ spring:
   # 정적 파일 변경 실시간 반영
   devtools:
     restart:
-      enabled: 'true'  # 자동 재시작 활성화/비활성화
+      enabled: 'false'  # 자동 재시작 활성화/비활성화
     livereload:
-      enabled: 'true'
+      enabled: 'false'
 
   # 타임리프 캐싱 OFF
   thymeleaf:

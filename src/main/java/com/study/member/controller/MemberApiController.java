@@ -6,12 +6,34 @@ import com.study.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
+
 @RestController
 @RequestMapping("/api/members")
 @RequiredArgsConstructor
 public class MemberApiController {
 
     private final MemberService memberService;
+
+    /**
+     * 로그인
+     */
+    @PostMapping("/login")
+    public MemberResponseDto login(@RequestBody MemberRequestDto params, HttpSession session) {
+        MemberResponseDto member = memberService.login(params.getLoginId(), params.getPassword());
+        session.setAttribute("loginMember", member); // 세션에 로그인 정보 저장
+        session.setMaxInactiveInterval(60 * 300); // 세션 유지 시간 : 300분
+        return member;
+    }
+
+    /**
+     * 로그아웃
+     */
+    @PostMapping("/logout")
+    public String logout(HttpSession session) {
+        session.invalidate(); // 세션 무효화
+        return "로그아웃 되었습니다.";
+    }
 
     /**
      * 회원 정보 저장 (회원가입)

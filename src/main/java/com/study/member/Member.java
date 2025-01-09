@@ -2,7 +2,6 @@ package com.study.member;
 
 import com.study.common.BaseTimeEntity;
 import com.study.member.dto.MemberRequestDto;
-import com.study.utils.PasswordEncoder;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;

@@ -2,7 +2,6 @@ package com.study.member.dto;
 
 import com.study.member.Gender;
 import com.study.member.Member;
-import com.study.utils.PasswordEncoder;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

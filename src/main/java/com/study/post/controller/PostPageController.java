@@ -1,11 +1,9 @@
 package com.study.post.controller;
 
+import com.study.member.dto.MemberResponseDto;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/post")
@@ -13,7 +11,9 @@ public class PostPageController {
 
     // 게시글 리스트 페이지
     @GetMapping("/list")
-    public String openPostList() {
+    public String openPostList(Model model, @SessionAttribute(name = "loginMember", required = false) MemberResponseDto loginMember) {
+        model.addAttribute("isLoggedIn" , loginMember != null);
+        model.addAttribute("loginMember" , loginMember);
         return "post/list";
     }
 

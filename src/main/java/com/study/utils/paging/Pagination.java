@@ -16,11 +16,11 @@ public class Pagination {
     public Pagination(int totalRecordCount, CommonParams params) {
         if (totalRecordCount > 0) {
             this.totalRecordCount = totalRecordCount;
-            this.caculation(params);
+            this.calculation(params);
         }
     }
 
-    private void caculation(CommonParams params) {
+    private void calculation(CommonParams params) {
 
         // 전체 페이지 수 계산
         totalPageCount = ((totalRecordCount - 1) / params.getRecordPerPage()) + 1;

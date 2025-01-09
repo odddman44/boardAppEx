@@ -55,13 +55,13 @@
                 <tr>
                     <th scope="row">아이디<span class="es">필수 입력</span></th>
                     <td>
-                        <input type="text" name="loginId" placeholder="아이디" maxlength="20" style="width: 80%;" />
+                        <input type="text" name="loginId" placeholder="아이디" maxlength="20" style="width: 80%;" required />
                         <button type="button" id="idCheckBtn" class="btns btn_st5" onclick="checkLoginId();" style="width: 20%; float: right;">중복 확인</button>
                     </td>
                 </tr>
                 <tr>
                     <th scope="row">비밀번호<span class="es">필수 입력</span></th>
-                    <td><input type="password" name="password" placeholder="비밀번호" maxlength="30" /></td>
+                    <td><input type="password" name="password" placeholder="비밀번호" maxlength="30" required /></td>
                 </tr>
                 <tr>
                     <th scope="row">비밀번호 재입력<span class="es">필수 입력</span></th>
@@ -107,6 +107,40 @@
 <script src="https://kit.fontawesome.com/79613ae794.js" crossorigin="anonymous"></script>
 <script>
     /*<![CDATA[*/
+        window.onload = () => {
+            document.querySelectorAll('#loginId, #password').forEach(element => {
+                element.addEventListener('keyup', (e) => {
+                    if (e.keyCode === 13) {
+                        login();
+                    }
+                })
+            })
+        }
+
+        async function login() {
+            const formData = new FormData(document.getElementById("loginForm"));
+            const params = Object.fromEntries(formData.entries());
+            try {
+                const response = await fetch('/api/members/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(params),
+                });
+                if (response.ok) {
+                    const result = await response.json();
+                    const name = result.name;
+                    alert(name + '님 환영합니다 ~');
+                    window.location.href = '/post/list'; // 로그인 후 게시판으로 이동
+                } else {
+                    const error = await response.json(); // 서버에서 반환한 에러 메시지 확인
+                    alert(error.message || '로그인 실패');
+                }
+            } catch (err) {
+                alert('로그인 중 오류 발생');
+                console.error(err);
+            }
+        }
+
         // 회원가입 팝업 open
         function openSignupPopup() {
             layerPop('signupPopup')
@@ -189,7 +223,7 @@
             params.birthday = params.birthday.replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3');
 
             // 3. Save API 호출
-            callApi('/members', 'post', params);
+            callApi('/api/members', 'post', params);
             alert('가입을 축하드립니다!\n로그인 후 서비스를 이용해 주세요.');
             closeSignupPopup();
         }
