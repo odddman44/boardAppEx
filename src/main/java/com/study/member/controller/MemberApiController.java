@@ -4,6 +4,7 @@ import com.study.member.dto.MemberRequestDto;
 import com.study.member.dto.MemberResponseDto;
 import com.study.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
@@ -27,12 +28,12 @@ public class MemberApiController {
     }
 
     /**
-     * 로그아웃
+     * 로그아웃 (Json 응답)
      */
     @PostMapping("/logout")
-    public String logout(HttpSession session) {
+    public ResponseEntity<String> logout(HttpSession session) {
         session.invalidate(); // 세션 무효화
-        return "로그아웃 되었습니다.";
+        return ResponseEntity.ok("로그아웃 되었습니다.");
     }
 
     /**
